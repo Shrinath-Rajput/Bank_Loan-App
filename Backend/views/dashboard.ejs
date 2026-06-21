@@ -40,74 +40,112 @@
 <div class="container-fluid dashboard-container">
     <div class="row">
         <div class="col-12">
-            <!-- Dashboard Card -->
-             <div class="col-12">
 
-    <!-- Summary Cards -->
+            <!-- Summary Cards -->
+            <div class="row mb-5 g-3">
 
-    <div class="row mb-4">
+                <div class="col-md-3 col-sm-6">
+                    <div class="stat-card stat-card-given">
+                        <div class="stat-icon">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-label">Total Given Amount</span>
+                            <h3 class="stat-value">₹ <%= totalGiven %></h3>
+                        </div>
+                    </div>
+                </div>
 
-        <div class="col-md-3">
-            <div class="card shadow-lg border-0 text-center p-3">
-                <h6>Total Given Amount</h6>
-                <h3>₹ <%= totalGiven %></h3>
+                <div class="col-md-3 col-sm-6">
+                    <div class="stat-card stat-card-interest">
+                        <div class="stat-icon">
+                            <i class="fas fa-coins"></i>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-label">Total Interest Received</span>
+                            <h3 class="stat-value">₹ <%= totalInterest %></h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-sm-6">
+                    <div class="stat-card stat-card-received">
+                        <div class="stat-icon">
+                            <i class="fas fa-arrow-rotate-left"></i>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-label">Total Received Amount</span>
+                            <h3 class="stat-value">₹ <%= totalReceived %></h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-sm-6">
+                    <div class="stat-card stat-card-pending">
+                        <div class="stat-icon">
+                            <i class="fas fa-hourglass-end"></i>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-label">Total Pending Amount</span>
+                            <h3 class="stat-value">₹ <%= totalPending %></h3>
+                        </div>
+                    </div>
+                </div>
+
             </div>
-        </div>
 
-        <div class="col-md-3">
-            <div class="card shadow-lg border-0 text-center p-3">
-                <h6>Total Interest Received</h6>
-                <h3>₹ <%= totalInterest %></h3>
+            <!-- Recent Transactions Card -->
+            <div class="dashboard-card recent-transactions-card">
+                <div class="card-header-premium">
+                    <h3 class="card-title-premium mb-0">
+                        <i class="fas fa-clock-rotate-left"></i>
+                        Recent Transactions
+                    </h3>
+                </div>
+
+                <div class="transactions-container">
+                    <% if(loans && loans.length > 0){ %>
+
+                        <% loans.forEach((loan)=>{ %>
+
+                            <a href="/history/<%= loan.Name %>"
+                               class="transaction-card-item">
+
+                                <div class="transaction-avatar">
+                                    <i class="fas fa-user-circle"></i>
+                                </div>
+
+                                <div class="transaction-info">
+                                    <h5 class="transaction-name">
+                                        <%= loan.Name %>
+                                    </h5>
+                                    <p class="transaction-meta">
+                                        Loan Amount
+                                    </p>
+                                </div>
+
+                                <div class="transaction-amount">
+                                    <span class="amount-highlight">₹ <%= loan.Loan %></span>
+                                </div>
+
+                            </a>
+
+                        <% }) %>
+
+                    <% } else { %>
+
+                        <div class="empty-transactions">
+                            <i class="fas fa-inbox"></i>
+                            <p>No customers added yet</p>
+                        </div>
+
+                    <% } %>
+                </div>
+
             </div>
-        </div>
 
-        <div class="col-md-3">
-            <div class="card shadow-lg border-0 text-center p-3">
-                <h6>Total Received Amount</h6>
-                <h3>₹ <%= totalReceived %></h3>
-            </div>
         </div>
-
-        <div class="col-md-3">
-            <div class="card shadow-lg border-0 text-center p-3">
-                <h6>Total Pending Amount</h6>
-                <h3>₹ <%= totalPending %></h3>
-            </div>
-        </div>
-
     </div>
-
-    <!-- Dashboard Card -->
-    <div class="dashboard-card p-4">
-
-    <h3 class="mb-4">
-        <i class="fas fa-clock-rotate-left"></i>
-        Recent Transactions
-    </h3>
-
-    <% if(loans && loans.length > 0){ %>
-
-        <% loans.forEach((loan)=>{ %>
-
-            <a href="/history/<%= loan.Name %>"
-               class="list-group-item list-group-item-action p-4 mb-3 rounded shadow-sm">
-
-                <h5>
-                    <i class="fas fa-user-circle"></i>
-                    <%= loan.Name %>
-                </h5>
-
-                <p class="mb-0">
-                    Loan Amount :
-                    <b>₹ <%= loan.Loan %></b>
-                </p>
-
-            </a>
-
-        <% }) %>
-
-    <% } %>
-
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
