@@ -1,55 +1,110 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Interest</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="/style.css">
 </head>
 
-<body>
+<body class="dashboard-body">
 
-<div class="container mt-5">
-
-    <h2>Add Interest</h2>
-
-    <form action="/interest/add" method="POST">
-
-        <input
-            type="hidden"
-            name="customer_name"
-            value="<%= name %>"
-        >
-
-        <div class="mb-3">
-            <label>Interest Amount</label>
-            <input
-                type="number"
-                name="interest_amount"
-                class="form-control"
-                required
-            >
+<!-- Header Section -->
+<div class="dashboard-header">
+    <div class="container-fluid py-5">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h1 class="dashboard-title mb-2">
+                    <i class="fas fa-plus-circle"></i> Add Interest
+                </h1>
+                <p class="dashboard-subtitle">Record interest payment for <%= name %></p>
+            </div>
         </div>
-
-        <div class="mb-3">
-            <label>Date</label>
-            <input
-                type="date"
-                name="interest_date"
-                class="form-control"
-                required
-            >
-        </div>
-
-        <button
-            type="submit"
-            class="btn btn-success"
-        >
-            Save Interest
-        </button>
-
-    </form>
-
+    </div>
 </div>
 
+<!-- Main Content -->
+<div class="container-fluid dashboard-container">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8 col-sm-10">
+            <!-- Form Card -->
+            <div class="dashboard-card form-card">
+                <div class="card-body p-5">
+                    <form action="/interest/add" method="POST" class="premium-form">
+
+                        <input
+                            type="hidden"
+                            name="customer_name"
+                            value="<%= name %>"
+                        >
+
+                        <!-- Customer Info -->
+                        <div class="info-box mb-4">
+                            <div class="info-item">
+                                <span class="info-label">Customer:</span>
+                                <span class="info-value"><%= name %></span>
+                            </div>
+                        </div>
+
+                        <!-- Interest Amount Field -->
+                        <div class="form-group mb-4">
+                            <label class="form-label premium-label">
+                                <i class="fas fa-money-bill-wave"></i> Interest Amount (₹)
+                            </label>
+                            <div class="input-wrapper">
+                                <input
+                                    type="number"
+                                    name="interest_amount"
+                                    class="form-control premium-input"
+                                    placeholder="Enter interest amount"
+                                    required
+                                    step="0.01"
+                                >
+                                <span class="input-icon"><i class="fas fa-rupee-sign"></i></span>
+                            </div>
+                            <small class="form-text">Amount of interest to be recorded</small>
+                        </div>
+
+                        <!-- Date Field -->
+                        <div class="form-group mb-5">
+                            <label class="form-label premium-label">
+                                <i class="fas fa-calendar"></i> Date
+                            </label>
+                            <div class="input-wrapper">
+                                <input
+                                    type="date"
+                                    name="interest_date"
+                                    class="form-control premium-input"
+                                    required
+                                >
+                                <span class="input-icon"><i class="fas fa-calendar-alt"></i></span>
+                            </div>
+                            <small class="form-text">Date of interest payment</small>
+                        </div>
+
+                        <!-- Form Actions -->
+                        <div class="form-actions">
+                            <button
+                                type="submit"
+                                class="btn btn-submit"
+                            >
+                                <i class="fas fa-check"></i> Save Interest
+                            </button>
+                            <a href="/" class="btn btn-cancel">
+                                <i class="fas fa-arrow-left"></i> Back to Dashboard
+                            </a>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

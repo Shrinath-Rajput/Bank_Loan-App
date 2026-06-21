@@ -12,126 +12,185 @@
 
     <link rel="stylesheet" href="/style.css">
 </head>
-<body>
+<body class="dashboard-body">
 
-<div class="container mt-5">
+<!-- Header Section -->
+<div class="dashboard-header">
+    <div class="container-fluid py-5">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h1 class="dashboard-title mb-2">
+                    <i class="fas fa-landmark"></i> Loan Management
+                </h1>
+                <p class="dashboard-subtitle">Track and manage your customer loans efficiently</p>
+            </div>
+            <div class="col-md-4 text-md-end text-start mt-3 mt-md-0">
+                <a href="/add-customer" class="floating-btn">
+                    <button class="btn btn-floating">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                    <span class="btn-tooltip">Add New Customer</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
+<!-- Main Content -->
+<div class="container-fluid dashboard-container">
+    <div class="row">
+        <div class="col-12">
+            <!-- Dashboard Card -->
+             <div class="col-12">
 
-        <h2>Loan Management Dashboard</h2>
+    <!-- Summary Cards -->
 
-        <a href="/add-customer">
-            <button class="btn btn-primary btn-lg">
-                <i class="fa-solid fa-plus"></i>
-            </button>
-        </a>
+    <div class="row mb-4">
+
+        <div class="col-md-3">
+            <div class="card shadow-lg border-0 text-center p-3">
+                <h6>Total Given Amount</h6>
+                <h3>₹ <%= totalGiven %></h3>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-lg border-0 text-center p-3">
+                <h6>Total Interest Received</h6>
+                <h3>₹ <%= totalInterest %></h3>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-lg border-0 text-center p-3">
+                <h6>Total Received Amount</h6>
+                <h3>₹ <%= totalReceived %></h3>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-lg border-0 text-center p-3">
+                <h6>Total Pending Amount</h6>
+                <h3>₹ <%= totalPending %></h3>
+            </div>
+        </div>
 
     </div>
 
-    <table class="table table-bordered table-hover">
+    <!-- Dashboard Card -->
+    <div class="dashboard-card">
 
-        <thead class="table-dark">
-            <tr>
-                <th>Name</th>
-                <th>Loan Amount</th>
-                <th>Interest %</th>
-                <th>Remaining Amount</th>
-                <th>Total Interest</th>
-                <th>Final Total</th>
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
+        <div class="table-responsive">
+             
+            <div class="dashboard-card">
+                <div class="table-responsive">
+                    <table class="table table-hover dashboard-table">
+                        <thead>
+                            <tr>
+                                <th><i class="fas fa-user"></i> Name</th>
+                                <th><i class="fas fa-money-bill"></i> Loan Amount</th>
+                                <th><i class="fas fa-percent"></i> Interest %</th>
+                                <th><i class="fas fa-balance-scale"></i> Remaining</th>
+                                <th><i class="fas fa-calculator"></i> Total Interest</th>
+                                <th><i class="fas fa-receipt"></i> Final Total</th>
+                                <th><i class="fas fa-signal"></i> Status</th>
+                                <th><i class="fas fa-cogs"></i> Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% if(loans && loans.length > 0){ %>
+                                <% loans.forEach((loan)=>{ %>
+                                    <tr class="table-row-hover">
+                                        <td>
+                                            <span class="customer-name">
+                                                <i class="fas fa-circle-user"></i> <%= loan.Name %>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="amount-badge amount-primary">₹ <%= loan.Loan %></span>
+                                        </td>
+                                        <td>
+                                            <span class="badge-pill"><%= loan.Interest %>%</span>
+                                        </td>
+                                        <td>
+                                            <span class="amount-badge amount-info">₹ <%= loan.Remaining %></span>
+                                        </td>
+                                        <td>
+                                            <span class="amount-badge amount-warning">₹ <%= loan.total_interest || 0 %></span>
+                                        </td>
+                                        <td>
+                                            <span class="amount-badge amount-final">
+                                                ₹ <%= Number(loan.Loan) + Number(loan.total_interest || 0) %>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <% if(loan.Remaining <= 0){ %>
+                                                <span class="status-badge status-closed">
+                                                    <i class="fas fa-check-circle"></i> Closed
+                                                </span>
+                                            <% } else { %>
+                                                <span class="status-badge status-active">
+                                                    <i class="fas fa-circle"></i> Active
+                                                </span>
+                                            <% } %>
+                                        </td>
+                                        <td>
+                                            <div class="action-buttons">
+                                                <% if(loan.Remaining > 0){ %>
+                                                    <a href="/interest/<%= loan.Name %>" class="btn-action btn-add-interest" title="Add Interest">
+                                                        <button class="btn btn-sm btn-action-add-interest">
+                                                            <i class="fas fa-plus-circle"></i> Add Interest
+                                                        </button>
+                                                    </a>
 
-        <tbody>
+                                                    <a href="/return/<%= loan.Name %>" class="btn-action btn-return-amount" title="Return Amount">
+                                                        <button class="btn btn-sm btn-action-return">
+                                                            <i class="fas fa-arrow-rotate-left"></i> Return
+                                                        </button>
+                                                    </a>
+                                                <% } %>
 
-        <% if(loans && loans.length > 0){ %>
+                                                <a href="/history/<%= loan.Name %>" class="btn-action btn-history" title="View History">
+                                                    <button class="btn btn-sm btn-action-history">
+                                                        <i class="fas fa-history"></i> History
+                                                    </button>
+                                                </a>
+                                                
 
-            <% loans.forEach((loan)=>{ %>
+                                                <a href="/delete/<%= loan.Name %>"
+                                                    onclick="return confirm('Delete this customer permanently?')">
+                                                    <button class="btn btn-danger btn-sm">
+                                                        <i class="fas fa-trash"></i> Delete
+                                                    </button>
+                                                </a>
+                                                
+                        
 
-                <tr>
-
-                    <td><%= loan.Name %></td>
-
-                    <td>₹ <%= loan.Loan %></td>
-
-                    <td><%= loan.Interest %>%</td>
-
-                    <td>₹ <%= loan.Remaining %></td>
-
-                    <td>₹ <%= loan.total_interest || 0 %></td>
-
-                    <td>
-                        ₹ <%= Number(loan.Loan) + Number(loan.total_interest || 0) %>
-                    </td>
-
-                    <td>
-
-                        <% if(loan.Remaining <= 0){ %>
-
-                            <span class="badge bg-danger">
-                                Closed
-                            </span>
-
-                        <% } else { %>
-
-                            <span class="badge bg-success">
-                                Active
-                            </span>
-
-                        <% } %>
-
-                    </td>
-
-                    <td>
-
-                        <% if(loan.Remaining > 0){ %>
-
-                            <a href="/interest/<%= loan.Name %>">
-                                <button class="btn btn-success btn-sm">
-                                    Add Interest
-                                </button>
-                            </a>
-
-                            <a href="/return/<%= loan.Name %>">
-                                <button class="btn btn-warning btn-sm">
-                                    Return Amount
-                                </button>
-                            </a>
-
-                        <% } %>
-
-                        <a href="/history/<%= loan.Name %>">
-                            <button class="btn btn-info btn-sm">
-                                History
-                            </button>
-                        </a>
-
-                    </td>
-
-                </tr>
-
-            <% }) %>
-
-        <% } else { %>
-
-            <tr>
-
-                <td colspan="8" class="text-center">
-
-                    No Customer Added Yet
-
-                </td>
-
-            </tr>
-
-        <% } %>
-
-        </tbody>
-
-    </table>
-
+                                                
+                                                
+                                            </div>
+                                        </td>
+                                    </tr>
+                                <% }) %>
+                            <% } else { %>
+                                <tr>
+                                    <td colspan="8" class="text-center empty-state">
+                                        <div class="empty-state-content">
+                                            <i class="fas fa-inbox"></i>
+                                            <p>No Customer Added Yet</p>
+                                            <small>Click the "+" button to add your first customer</small>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

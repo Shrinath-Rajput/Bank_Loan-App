@@ -62,8 +62,28 @@ app.get("/", (req, res) => {
             return res.status(500).send("Database Error");
         }
 
+        let totalGiven = 0;
+        let totalInterest = 0;
+        let totalPending = 0;
+
+        results.forEach((loan) => {
+
+            totalGiven += Number(loan.Loan);
+
+            totalInterest += Number(loan.total_interest || 0);
+
+            totalPending += Number(loan.Remaining);
+
+        });
+
+        let totalReceived = totalGiven + totalInterest;
+
         res.render("dashboard", {
-            loans: results
+            loans: results,
+            totalGiven,
+            totalInterest,
+            totalReceived,
+            totalPending
         });
 
     });
@@ -75,17 +95,51 @@ app.get("/add-customer", (req, res) => {
     res.render("addcustomer");
 });
 
-app.get("/dashboad",(req,res)=>{
-   let q= "SELECT * FROM loan";
-   connection.query(q,(err,results)=>{
-       if(err){
-           console.log("Error fetching loan data:", err);
-           res.status(500).send("Error fetching loan data");
+app.get("/dashboad", (req, res) => {
 
-       } else {
-           res.render("dashboard", { loans: results });
-       }
-   });
+    let q = `
+    SELECT
+        loan.*,
+        IFNULL(SUM(interest_history.interest_amount),0) AS total_interest
+    FROM loan
+    LEFT JOIN interest_history
+    ON loan.Name = interest_history.customer_name
+    GROUP BY loan.Name, loan.Loan, loan.Interest, loan.Remaining, loan.Action
+    `;
+
+    connection.query(q, (err, results) => {
+
+        if(err){
+            console.log(err);
+            return res.send("Database Error");
+        }
+
+        let totalGiven = 0;
+        let totalInterest = 0;
+        let totalPending = 0;
+
+        results.forEach((loan) => {
+
+            totalGiven += Number(loan.Loan);
+
+            totalInterest += Number(loan.total_interest || 0);
+
+            totalPending += Number(loan.Remaining);
+
+        });
+
+        let totalReceived = totalGiven + totalInterest;
+
+        res.render("dashboard", {
+            loans: results,
+            totalGiven,
+            totalInterest,
+            totalReceived,
+            totalPending
+        });
+
+    });
+
 });
 app.post("/customer/new", (req, res) => {
 
@@ -251,6 +305,39 @@ app.post("/return/add", (req, res) => {
         }
     );
 
+});
+app.get("/delete/:name", (req, res) => {
+
+    let name = req.params.name;
+
+    connection.query(
+        "DELETE FROM interest_history WHERE customer_name = ?",
+        [name],
+        (err) => {
+
+            if(err) return res.send("Database Error");
+
+            connection.query(
+                "DELETE FROM return_history WHERE customer_name = ?",
+                [name],
+                (err) => {
+
+                    if(err) return res.send("Database Error");
+
+                    connection.query(
+                        "DELETE FROM loan WHERE Name = ?",
+                        [name],
+                        (err) => {
+
+                            if(err) return res.send("Database Error");
+
+                            res.redirect("/");
+                        }
+                    );
+                }
+            );
+        }
+    );
 });
 
 
