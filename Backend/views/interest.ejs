@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Interest</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="container mt-5">
+
+    <h2>Add Interest</h2>
+
+    <form action="/interest/add" method="POST">
+
+        <input
+            type="hidden"
+            name="customer_name"
+            value="<%= name %>"
+        >
+
+        <div class="mb-3">
+            <label>Interest Amount</label>
+            <input
+                type="number"
+                name="interest_amount"
+                class="form-control"
+                required
+            >
+        </div>
+
+        <div class="mb-3">
+            <label>Date</label>
+            <input
+                type="date"
+                name="interest_date"
+                class="form-control"
+                required
+            >
+        </div>
+
+        <button
+            type="submit"
+            class="btn btn-success"
+        >
+            Save Interest
+        </button>
+
+    </form>
+
+</div>
+
+</body>
+</html>

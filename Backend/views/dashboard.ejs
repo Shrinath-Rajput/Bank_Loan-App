@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loan Management Dashboard</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<div class="container mt-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <h2>Loan Management Dashboard</h2>
+
+        <a href="/add-customer">
+            <button class="btn btn-primary btn-lg">
+                <i class="fa-solid fa-plus"></i>
+            </button>
+        </a>
+
+    </div>
+
+    <table class="table table-bordered table-hover">
+
+        <thead class="table-dark">
+            <tr>
+                <th>Name</th>
+                <th>Loan Amount</th>
+                <th>Interest %</th>
+                <th>Remaining Amount</th>
+                <th>Total Interest</th>
+                <th>Final Total</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+        <% if(loans && loans.length > 0){ %>
+
+            <% loans.forEach((loan)=>{ %>
+
+                <tr>
+
+                    <td><%= loan.Name %></td>
+
+                    <td>₹ <%= loan.Loan %></td>
+
+                    <td><%= loan.Interest %>%</td>
+
+                    <td>₹ <%= loan.Remaining %></td>
+
+                    <td>₹ <%= loan.total_interest || 0 %></td>
+
+                    <td>
+                        ₹ <%= Number(loan.Loan) + Number(loan.total_interest || 0) %>
+                    </td>
+
+                    <td>
+
+                        <% if(loan.Remaining <= 0){ %>
+
+                            <span class="badge bg-danger">
+                                Closed
+                            </span>
+
+                        <% } else { %>
+
+                            <span class="badge bg-success">
+                                Active
+                            </span>
+
+                        <% } %>
+
+                    </td>
+
+                    <td>
+
+                        <% if(loan.Remaining > 0){ %>
+
+                            <a href="/interest/<%= loan.Name %>">
+                                <button class="btn btn-success btn-sm">
+                                    Add Interest
+                                </button>
+                            </a>
+
+                            <a href="/return/<%= loan.Name %>">
+                                <button class="btn btn-warning btn-sm">
+                                    Return Amount
+                                </button>
+                            </a>
+
+                        <% } %>
+
+                        <a href="/history/<%= loan.Name %>">
+                            <button class="btn btn-info btn-sm">
+                                History
+                            </button>
+                        </a>
+
+                    </td>
+
+                </tr>
+
+            <% }) %>
+
+        <% } else { %>
+
+            <tr>
+
+                <td colspan="8" class="text-center">
+
+                    No Customer Added Yet
+
+                </td>
+
+            </tr>
+
+        <% } %>
+
+        </tbody>
+
+    </table>
+
+</div>
+
+</body>
+</html>
