@@ -1,0 +1,36 @@
+<hr>
+
+<div class="d-flex gap-2 flex-wrap">
+
+    <a href="/interest/<%= customer.Name %>">
+        <button class="btn btn-success">
+            Add Interest
+        </button>
+    </a>
+
+    <a href="/return/<%= customer.Name %>">
+        <button class="btn btn-warning">
+            Return Amount
+        </button>
+    </a>
+
+    <a href="/history/<%= customer.Name %>">
+        <button class="btn btn-info">
+            History
+        </button>
+    </a>
+
+    <a href="/delete/<%= customer.Name %>"
+       onclick="return confirm('Delete Customer Permanently?')">
+        <button class="btn btn-danger">
+            Delete
+        </button>
+    </a>
+
+    <a href="/">
+        <button class="btn btn-secondary">
+            Back Dashboard
+        </button>
+    </a>
+
+</div>

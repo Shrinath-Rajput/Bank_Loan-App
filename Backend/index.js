@@ -351,6 +351,36 @@ app.get("/return/:name", (req, res) => {
 
 });
 
+app.get("/customer/:name", (req, res) => {
+
+    let name = req.params.name;
+
+    let q = `
+        SELECT
+            loan.*,
+            IFNULL(SUM(interest_history.interest_amount),0) AS total_interest
+        FROM loan
+        LEFT JOIN interest_history
+        ON loan.Name = interest_history.customer_name
+        WHERE loan.Name = ?
+        GROUP BY loan.Name, loan.Loan, loan.Interest, loan.Remaining, loan.Action
+    `;
+
+    connection.query(q, [name], (err, result) => {
+
+        if(err){
+            console.log(err);
+            return res.send("Database Error");
+        }
+
+        res.render("customer", {
+            customer: result[0]
+        });
+
+    });
+
+});
+
 
 app.listen(5000, () => {
     console.log("Server Running On Port 5000");

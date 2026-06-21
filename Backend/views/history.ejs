@@ -155,6 +155,32 @@
                     </table>
                 </div>
             </div>
+            <div class="mb-4">
+
+    <% if(customer.Remaining > 0){ %>
+
+        <a href="/interest/<%= customer.Name %>">
+            <button class="btn btn-success">
+                Add Interest
+            </button>
+        </a>
+
+        <a href="/return/<%= customer.Name %>">
+            <button class="btn btn-warning">
+                Return Amount
+            </button>
+        </a>
+
+    <% } %>
+
+    <a href="/delete/<%= customer.Name %>"
+       onclick="return confirm('Delete Customer?')">
+        <button class="btn btn-danger">
+            Delete
+        </button>
+    </a>
+
+</div>
 
             <!-- Summary Card -->
             <div class="dashboard-card mb-4">
