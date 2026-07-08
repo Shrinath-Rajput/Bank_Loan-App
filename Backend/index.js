@@ -1,8 +1,9 @@
+require("dotenv").config();
 const express = require("express");
 const path = require("path");
+const app = express();
 
 const methodOverride=require("method-override")
-const app = express();
 const mysql=require("mysql2");
 
 
@@ -25,7 +26,6 @@ connection.connect((err) => {
 });
 
 
-app.set("view engine", "ejs");
 //middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -387,7 +387,9 @@ app.get("/customer/:name", (req, res) => {
 });
 
 
-app.listen(5000, () => {
-    console.log("Server Running On Port 5000");
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+    console.log(`🚀 Server Running On Port ${PORT}`);
 });
 
